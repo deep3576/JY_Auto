@@ -53,7 +53,7 @@ def invoice(id):
     pdf = BytesIO()
     HTML(string=html).write_pdf(pdf)
     pdf.seek(0)
-    return send_file(pdf, attachment_filename='invoice.pdf', as_attachment=True)
+    return send_file(pdf, download_name='invoice.pdf', as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)
