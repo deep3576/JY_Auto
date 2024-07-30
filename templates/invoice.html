@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Invoice</h2>
+        <p><strong>Name:</strong> {{ customer.name }}</p>
+        <p><strong>Email:</strong> {{ customer.email }}</p>
+        <p><strong>Vehicle:</strong> {{ customer.vehicle }}</p>
+        <p><strong>Service:</strong> {{ customer.service }}</p>
+        <p><strong>Cost:</strong> ${{ customer.cost }}</p>
+    </div>
+</body>
+</html>

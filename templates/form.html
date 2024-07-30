@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Shop Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Auto Shop Customer Form</h2>
+        <form action="/submit" method="post">
+            <input type="text" name="name" placeholder="Customer Name" required>
+            <input type="email" name="email" placeholder="Customer Email" required>
+            <input type="text" name="vehicle" placeholder="Vehicle Make & Model" required>
+            <input type="text" name="service" placeholder="Service Provided" required>
+            <input type="number" name="cost" placeholder="Cost ($)" required>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>

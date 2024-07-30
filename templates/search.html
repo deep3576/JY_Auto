@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Customers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Search Customer Records</h2>
+        <form action="/results" method="post">
+            <input type="text" name="query" placeholder="Enter customer name" required>
+            <input type="submit" value="Search">
+        </form>
+    </div>
+</body>
+</html>
