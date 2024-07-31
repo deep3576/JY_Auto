@@ -1,0 +1,15 @@
+table {
+    width: 100%;
+  }
+ 
+th {
+    height: 70px;
+  }
+
+td , th{
+    width : 20px;
+}
+  th, td {
+    border: 1px dotted;
+
+  }

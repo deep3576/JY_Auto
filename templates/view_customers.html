@@ -4,70 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Customers</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="../static/page_type.css">
     <a href="/">Home</a>
 </head>
 
 <body>
     <h1>All Customers</h1>
-    <ul>
+    <table>
+        <tr>
+            <th> Customer Name </th>
+            <th> Contact Number </th>
+            <th> Car details</th>
+            <th> Date/Time </th>
+            <th> </th>
+            <th> </th>
+            <th> </th>
+        </tr>
+
+
         {% for customer in customers %}
 
-        <table>
-            <tr>
-
-                <th> Customer Name </th>
-                <th> Contact Number </th>
-                <th> Car details</th>
-
-                <th> Date/Time </th>
-
-            </tr>
-        </table>
-
-        <table>
-            <tr>
-                <td> {{ customer.name }} </td>
-                <td>{{ customer.phone }}</td>
-                <td>{{ customer.CarMake }} {{customer.CarModel}}</td>
-                <td>{{ customer.created_at }}</td>
+        <tr>
+            <td> {{ customer.name }} </td>
+            <td> {{ customer.phone }}</td>
+            <td>{{ customer.CarMake }} {{customer.CarModel}}</td>
+            <td>{{ customer.created_at }}</td>
+            <td><button onclick="editLink()"> Edit </button></td>
+            <td>
+                <form action="{{ url_for('delete_customer', id=customer.id) }}" method="post" style="display:inline;">
+                    <button type="submit">Delete</button></form>
+            </td>
+            <td><button onclick="redirectToLink()"> Generate Invoice </button> </td>
+        </tr>
 
 
-
-            </tr>
-
-
-
-
-        </table>
-
-
-        <li>
-
-            <button onclick="editLink()"> Edit </button>
-            <script>
-                function editLink() {
-                    // Redirect to the specified URL
-                    window.location.href = "{{ url_for('update_customer', id=customer.id) }}";
-                }
-            </script>
-
-
-            <form action="{{ url_for('delete_customer', id=customer.id) }}" method="post" style="display:inline;">
-                <button type="submit">Delete</button>
-            </form>
-
-            <button onclick="redirectToLink()"> Generate Invoice </button>
-
-            <script>
-                function redirectToLink() {
-                    // Redirect to the specified URL
-                    window.location.href = "{{ url_for('invoice', id=customer.id) }}";
-                }
-            </script>
-        </li>
+        <script>
+            function editLink() {
+                // Redirect to the specified URL
+                window.location.href = "{{ url_for('update_customer', id=customer.id) }}";
+            }
+            function redirectToLink() {
+                // Redirect to the specified URL
+                window.location.href = "{{ url_for('invoice', id=customer.id) }}";
+            }
+        </script>
         {% endfor %}
-    </ul>
+    </table>
+
+    <br>
     <a href="{{ url_for('add_customer') }}">Add New Customer</a>
 </body>
 

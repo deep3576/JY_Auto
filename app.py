@@ -29,15 +29,16 @@ class Customer(db.Model):
     CarModel = db.Column(db.String(20), nullable=False)
     Vin = db.Column(db.String(120), nullable=False)
     Job = db.Column(db.String(240), nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     Price = db.Column(db.Integer, nullable=False)
+    Price1 = db.Column(db.Integer, nullable=True)
+    Price2 = db.Column(db.Integer, nullable=True)
+    Price3 = db.Column(db.Integer, nullable=True)
+    Subtotal = db.Column(db.Integer, nullable=True)
+    gst = db.Column(db.Integer, nullable=True)
+    Total_Amount = db.Column(db.Integer, nullable=True)
 
     # Add other fields as needed
-
-with app.app_context():
-    db.create_all()  # This creates the tables if they don't exist
-
-
 
 @app.route('/')
 def home():
@@ -108,11 +109,31 @@ def delete_customer(id):
 @app.route('/invoice/<int:id>')
 def invoice(id):
     customer = Customer.query.get_or_404(id)
+    customer.Subtotal = Calculate_Subtotal(customer.Price,customer.Price1,customer.Price2,customer.Price3)
+    customer.gst=Calculate_gst(customer.Total_Amount)
+    customer.Total_Amount = customer.Subtotal + customer.gst
+    
     html = render_template('invoice.html', customer=customer)
     pdf = BytesIO()
     HTML(string=html).write_pdf(pdf)
     pdf.seek(0)
     return send_file(pdf, download_name='invoice.pdf', as_attachment=True)
 
+
+def Calculate_gst(Total_Amount) :
+    return Total_Amount * 13 / 100
+
+def Calculate_Subtotal (Price,Price1,Price2,Price3):
+    if (Price1 == null ):
+        return Price
+    if (Price2 == null ):
+        return Price + Price1
+    if (Price3 == null ):
+        return Price + Price1 + Price2
+    return Price + Price1 + Price2 + Price3
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    db.create_all() 
+    app.run(debug=False)
+
