@@ -109,8 +109,9 @@ def delete_customer(id):
 @app.route('/invoice/<int:id>')
 def invoice(id):
     customer = Customer.query.get_or_404(id)
+    print ('Total Amount ::',customer.Total_Amount)
     customer.Subtotal = Calculate_Subtotal(customer.Price,customer.Price1,customer.Price2,customer.Price3)
-    customer.gst=Calculate_gst(customer.Total_Amount)
+    customer.gst=Calculate_gst(customer.Subtotal)
     customer.Total_Amount = customer.Subtotal + customer.gst
     
     html = render_template('invoice.html', customer=customer)
@@ -119,16 +120,15 @@ def invoice(id):
     pdf.seek(0)
     return send_file(pdf, download_name='invoice.pdf', as_attachment=True)
 
-
-def Calculate_gst(Total_Amount) :
-    return Total_Amount * 13 / 100
+def Calculate_gst(Subtotal) :
+    return Subtotal * 13 / 100
 
 def Calculate_Subtotal (Price,Price1,Price2,Price3):
-    if (Price1 == null ):
+    if (Price1 == None ):
         return Price
-    if (Price2 == null ):
+    if (Price2 == None ):
         return Price + Price1
-    if (Price3 == null ):
+    if (Price3 == None ):
         return Price + Price1 + Price2
     return Price + Price1 + Price2 + Price3
 
