@@ -3,4 +3,5 @@ Flask-SQLAlchemy==2.5.1
 WeasyPrint==53.0
 Werkzeug>=2.0,<3.0
 SQLAlchemy==1.4.53
-datetime
+datetime==5.5
+gunicorn==22.0.0
