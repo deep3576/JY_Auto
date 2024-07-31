@@ -10,13 +10,50 @@
     <h1>All Customers</h1>
     <ul>
         {% for customer in customers %}
+        
+      <table>
+<tr>
+
+<th> Customer Name  </th>
+    <th> Contact Number  </th>
+    <th> Car details</th>
+
+<th> Date/Time </th>
+    
+</tr>
+      </table>
+
+        <table>
+          <tr>
+<td> {{ customer.name }} </td>
+              <td>{{ customer.phone }}</td>
+              <td>{{ customer.CarMake }} {{customer.CarModel}}</td>
+              <td>{{ customer.created_at }}</td>
+              
+
+              
+          </tr>
+          
+
+
+          
+      </table>  
+        
+        
         <li>
+<<<<<<< HEAD
             {{ customer.name }}   ||    {{ customer.email }}   ||   {{ customer.phone }}    ||    {{ customer.CarMake }} {{customer.CarModel}}   ||   {{ customer.created_at }}
             
             <button onclick="editLink()"> Edit </button>
 
             <script>
                 function editLink() {
+=======
+             <button onclick="redirect()"> Edit </button>
+
+            <script>
+                function redirect() {
+>>>>>>> 612b66d320879b01f96ca05903df6449746c03a5
                     // Redirect to the specified URL
                     window.location.href = "{{ url_for('update_customer', id=customer.id) }}" ;
                 }
