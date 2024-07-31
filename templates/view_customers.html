@@ -10,8 +10,37 @@
     <h1>All Customers</h1>
     <ul>
         {% for customer in customers %}
+        
+      <table>
+<tr>
+
+<th> Customer Name  </th>
+    <th> Contact Number  </th>
+    <th> Car details</th>
+
+<th> Date/Time </th>
+
+    
+</tr>
+
+          <tr>
+<td> {{ customer.name }} </td>
+              <td>{{ customer.phone }}</td>
+              <td>{{ customer.CarMake }} {{customer.CarModel}}</td>
+              <td>{{ customer.created_at }}</td>
+              
+
+              
+          </tr>
+          
+
+
+          
+      </table>  
+        
+        
         <li>
-            {{ customer.name }}   ||    {{ customer.email }}   ||   {{ customer.phone }}    ||    {{ customer.CarMake }} {{customer.CarModel}}   ||   {{ customer.created_at }}
+              ||    {{ customer.email }}   ||   {{ customer.phone }}    ||    {{ customer.CarMake }} {{customer.CarModel}}   ||   {{ customer.created_at }}
             
             <button onclick="redirect()"> Edit </button>
 
