@@ -1,19 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .invoice {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        .invoice h1 {
+            text-align: center;
+        }
+        .invoice table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .invoice table, .invoice th, .invoice td {
+            border: 1px solid #ddd;
+        }
+        .invoice th, .invoice td {
+            padding: 8px;
+            text-align: left;
+        }
+        .invoice th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
+    <div class="invoice">
+        <h1>JY AUTO SHOP</h1>
         <h2>Invoice</h2>
+        <p><strong>Created at :</strong> {{ customer.created_at }}</p>
         <p><strong>Name:</strong> {{ customer.name }}</p>
         <p><strong>Email:</strong> {{ customer.email }}</p>
-        <p><strong>Vehicle:</strong> {{ customer.vehicle }}</p>
-        <p><strong>Service:</strong> {{ customer.service }}</p>
-        <p><strong>Cost:</strong> ${{ customer.cost }}</p>
+        <p><strong>Phone:</strong> {{ customer.phone }}</p>
+        <p><strong>Car Make:</strong> {{ customer.CarMake }}</p>
+        <p><strong>Car Model :</strong> {{ customer.CarModel }}</p>
+        <p><strong>VIN #</strong> {{ customer.Vin }}</p>
+        <p><strong>Amount Charged :</strong> {{ customer.Price }}</p>
+
+
+        <!-- Add more invoice details as needed -->
     </div>
 </body>
 </html>

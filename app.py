@@ -1,50 +1,109 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file
 from flask_sqlalchemy import SQLAlchemy
-import os
 from weasyprint import HTML
 from io import BytesIO
-from urllib.parse import quote
+from datetime import datetime
 
+# app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///auto_shop.db'
+# app.config['SECRET_KEY'] = 'your_secret_key'
+# db = SQLAlchemy(app)
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///auto_shop.db'
+app.config['SECRET_KEY'] = 'Gmsshn!43'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 
+with app.app_context():
+    db.create_all()  # This creates the tables if they don't exist
+
+
+# Define your Customer model
 class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120), nullable=False)
-    vehicle = db.Column(db.String(100), nullable=False)
-    service = db.Column(db.String(200), nullable=False)
-    cost = db.Column(db.Float, nullable=False)
+    name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(120), unique=False, nullable=False)
+    phone = db.Column(db.String(20), nullable=False)
+    CarMake = db.Column(db.String(20), nullable=False)
+    CarModel = db.Column(db.String(20), nullable=False)
+    Vin = db.Column(db.String(120), nullable=False)
+    Job = db.Column(db.String(240), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    Price = db.Column(db.Integer, nullable=False)
 
-db.create_all()
+    # Add other fields as needed
+
+with app.app_context():
+    db.create_all()  # This creates the tables if they don't exist
+
+
 
 @app.route('/')
 def home():
-    return render_template('form.html')
+    return render_template('home.html')
 
-@app.route('/submit', methods=['POST'])
-def submit():
-    name = request.form['name']
-    email = request.form['email']
-    vehicle = request.form['vehicle']
-    service = request.form['service']
-    cost = request.form['cost']
-    customer = Customer(name=name, email=email, vehicle=vehicle, service=service, cost=cost)
-    db.session.add(customer)
+
+@app.route('/customers', methods=['GET'])
+def view_all_customers():
+    customers = Customer.query.all()
+    return render_template('view_customers.html', customers=customers)
+
+@app.route('/add_customer', methods=['GET', 'POST'])
+def add_customer():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        CarMake = request.form['CarMake']
+        CarModel = request.form['CarModel']
+        Vin = request.form['Vin']
+        Job = request.form['Job']
+        Price = request.form['Price']
+        new_customer = Customer(name=name, email=email, phone=phone , CarMake=CarMake ,CarModel=CarModel,Vin=Vin ,Job=Job,Price=Price)
+        
+        try:
+            db.session.add(new_customer)
+            db.session.commit()
+            flash('Customer added successfully!', 'success')
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error adding customer: {e}', 'error')
+        
+        return redirect(url_for('view_all_customers'))
+    
+    return render_template('add_customer.html')
+
+
+@app.route('/customer/<int:id>', methods=['GET', 'POST'])
+def update_customer(id):
+    if id == 0:  # Adding a new customer
+        customer = Customer()
+    else:
+        customer = Customer.query.get_or_404(id)
+    
+    if request.method == 'POST':
+        customer.name = request.form['name']
+        customer.email = request.form['email']
+        customer.phone = request.form['phone']
+        
+        if id == 0:  # If adding a new customer
+            db.session.add(customer)
+        
+        db.session.commit()
+        flash('Customer saved successfully!', 'success')
+        return redirect(url_for('view_all_customers'))
+    
+
+    return render_template('update_customer.html', customer=customer)
+
+@app.route('/customer/delete/<int:id>', methods=['POST'])
+def delete_customer(id):
+    customer = Customer.query.get_or_404(id)
+    db.session.delete(customer)
     db.session.commit()
-    return redirect(url_for('home'))
-
-@app.route('/search')
-def search():
-    return render_template('search.html')
-
-@app.route('/results', methods=['POST'])
-def results():
-    search_query = request.form['query']
-    results = Customer.query.filter(Customer.name.contains(search_query)).all()
-    return render_template('results.html', results=results)
+    flash('Customer deleted successfully!', 'success')
+    return redirect(url_for('view_all_customers'))
 
 @app.route('/invoice/<int:id>')
 def invoice(id):
