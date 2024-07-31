@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Invoice</title>
@@ -7,46 +8,115 @@
         body {
             font-family: Arial, sans-serif;
         }
+
         .invoice {
             width: 80%;
             margin: auto;
             padding: 20px;
             border: 1px solid #ddd;
         }
-        .invoice h1 {
+
+        .invoice h1,
+        h2,
+        h3 {
             text-align: center;
         }
+
         .invoice table {
             width: 100%;
             border-collapse: collapse;
         }
-        .invoice table, .invoice th, .invoice td {
-            border: 1px solid #ddd;
-        }
-        .invoice th, .invoice td {
+
+        .invoice th,
+        .invoice td {
             padding: 8px;
             text-align: left;
         }
+
         .invoice th {
             background-color: #f2f2f2;
         }
+
+        .invoice tr {
+            background-color: white;
+
+        }
+
+        .invoice p {
+            text-align: right;
+        }
+
+        #TimeStamp {
+            text-align: left;
+        }
+        #Invoice_number {
+            text-align: right;
+        }
     </style>
 </head>
+
 <body>
     <div class="invoice">
-        <h1>JY AUTO SHOP</h1>
+        <h1>JY Auto Mechanic Repair</h1>
+        <h2>Car Repair and Maintainence</h2>
+        <h3> 70 Borden Ave S , Unit 12 , Kitchner , Ontario N2G 3R5 </h3>
+        <h3> Ph: +1 647- 471- 0802</h3>
         <h2>Invoice</h2>
-        <p><strong>Created at :</strong> {{ customer.created_at }}</p>
-        <p><strong>Name:</strong> {{ customer.name }}</p>
-        <p><strong>Email:</strong> {{ customer.email }}</p>
-        <p><strong>Phone:</strong> {{ customer.phone }}</p>
-        <p><strong>Car Make:</strong> {{ customer.CarMake }}</p>
-        <p><strong>Car Model :</strong> {{ customer.CarModel }}</p>
-        <p><strong>VIN #</strong> {{ customer.Vin }}</p>
+        <table class="waffle" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <th id="TimeStamp"> Created at :</strong> {{ customer.created_at }} </th>
+
+                    <th id="Invoice_number"> Invoice Number :</strong> {{ customer.Id }} </th>
+                </tr>
+                </th>
+
+        </table>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Customer Details
+                    </th>
+
+                    <th>
+                        Car Details
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Name : {{ customer.name }}
+                    </td>
+                    <td>
+                        Car Make : {{ customer.CarMake }}
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        Email : {{ customer.email }}
+                    </td>
+                    <td>
+                        Car Model : {{ customer.CarModel }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Contact Number : {{ customer.phone }}
+                    </td>
+                    <td>
+                        VIN # {{ customer.Vin }}
+                    </td>
+                </tr>
+
+            </thead>
+
+        </table>
         <p><strong>Amount Charged :</strong> {{ customer.Price }}</p>
 
 
-        <!-- Add more invoice details as needed -->
     </div>
 </body>
+
 </html>

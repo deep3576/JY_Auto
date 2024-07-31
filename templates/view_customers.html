@@ -13,10 +13,10 @@
         <li>
             {{ customer.name }}   ||    {{ customer.email }}   ||   {{ customer.phone }}    ||    {{ customer.CarMake }} {{customer.CarModel}}   ||   {{ customer.created_at }}
             
-            <button onclick="redirectToLink()"> Edit </button>
+            <button onclick="editLink()"> Edit </button>
 
             <script>
-                function redirectToLink() {
+                function editLink() {
                     // Redirect to the specified URL
                     window.location.href = "{{ url_for('update_customer', id=customer.id) }}" ;
                 }
