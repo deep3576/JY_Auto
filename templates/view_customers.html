@@ -45,12 +45,8 @@
         <li>
 
             <button onclick="editLink()"> Edit </button>
-
-
-
             <script>
                 function editLink() {
-
                     // Redirect to the specified URL
                     window.location.href = "{{ url_for('update_customer', id=customer.id) }}";
                 }
