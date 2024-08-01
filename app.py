@@ -47,7 +47,7 @@ def home():
 
 @app.route('/customers', methods=['GET'])
 def view_all_customers():
-    customers = Customer.query.all()
+    customers = Customer.query.limit(10).all()
     return render_template('view_customers.html', customers=customers)
 
 @app.route('/add_customer', methods=['GET', 'POST'])
