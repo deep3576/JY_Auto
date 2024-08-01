@@ -48,7 +48,7 @@ def home():
 
 @app.route('/customers', methods=['GET'])
 def view_all_customers():
-    customers = Customer.query.limit(10).all()
+    customers = Customer.query.all()
     return render_template('view_customers.html', customers=customers)
 
 @app.route('/add_customer', methods=['GET', 'POST'])
@@ -62,7 +62,8 @@ def add_customer():
         Vin = request.form['Vin']
         Job = request.form['Job']
         Price = request.form['Price']
-        new_customer = Customer(name=name, email=email, phone=phone , CarMake=CarMake ,CarModel=CarModel,Vin=Vin ,Job=Job,Price=Price)
+        Price1 = request.form['Price1']
+        new_customer = Customer(name=name, email=email, phone=phone , CarMake=CarMake ,CarModel=CarModel,Vin=Vin ,Job=Job,Price=Price,Price1=Price1)
         
         try:
             db.session.add(new_customer)
@@ -178,5 +179,5 @@ def Calculate_Subtotal (Price,Price1,Price2,Price3):
 
 if __name__ == '__main__':
     db.create_all() 
-    app.run(debug=False)
+    app.run(debug=True)
 
