@@ -156,7 +156,7 @@ def search_customers():
             pass  # handle date parsing errors or inform the user
 
     # Execute the query and fetch the results
-    customers = query.all()
+    customers = query.limit(10).all()
 
     # Render the template with the filtered results
     return render_template('view_customers.html', customers=customers)
