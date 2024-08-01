@@ -3,13 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Customer</title>
-    <a href="/">Home</a>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <Button onclick="homepage()">Home</Button>
+<script>
+function homepage() {
+                        // Redirect to the specified URL
+                        window.location.href = "/" ;
+                    }
+
+</script>
+
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='addcustomer.css') }}">
+
+
 
 </head>
 <body>
     <h1>Add New Customer</h1>
-    <form action="{{ url_for('add_customer') }}" method="post">
+    
+    <form action="{{ url_for('add_customer') }}" method="post" >
+        
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required><br><br>
         <label for="email">Email:</label>
@@ -32,11 +45,10 @@
         <label for="Price"> Amount Charged ( With out GST / HST ):</label>
         <input type="Number" id="Price" name="Price" required><br><br>
         
-        
-
-        
-        <button type="submit">Add Customer</button>
+    <button type="submit">Add Customer</button>
         <button type="reset"> Reset</button>
     </form>
+
+
 </body>
 </html>
