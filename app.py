@@ -30,6 +30,7 @@ class Customer(db.Model):
     Vin = db.Column(db.String(120), nullable=False)
     Job = db.Column(db.String(240), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    last_updated = db.Column(db.DateTime , nullable= True )
     Price = db.Column(db.Integer, nullable=False)
     Price1 = db.Column(db.Integer, nullable=True)
     Price2 = db.Column(db.Integer, nullable=True)
