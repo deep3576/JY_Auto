@@ -120,6 +120,48 @@ def invoice(id):
     pdf.seek(0)
     return send_file(pdf, download_name='invoice.pdf', as_attachment=True)
 
+
+
+@app.route('/search_customers', methods=['GET'])
+def search_customers():
+    # Get search parameters from the query string
+    search_by = request.args.get('search_by', 'name')
+    search_term = request.args.get('search_term', '').strip()
+    start_date = request.args.get('start_date', '')
+    end_date = request.args.get('end_date', '')
+
+    # Start with a base query
+    query = Customer.query
+
+    # Apply filters based on search criteria
+    if search_term:
+        if search_by == 'name':
+            query = query.filter(Customer.name.ilike(f"%{search_term}%"))
+        elif search_by == 'email':
+            query = query.filter(Customer.email.ilike(f"%{search_term}%"))
+        elif search_by == 'phone':
+            query = query.filter(Customer.phone.ilike(f"%{search_term}%"))
+
+    if start_date:
+        try:
+            start_date = datetime.strptime(start_date, '%Y-%m-%d')
+            query = query.filter(Customer.created_at >= start_date)
+        except ValueError:
+            pass  # handle date parsing errors or inform the user
+    if end_date:
+        try:
+            end_date = datetime.strptime(end_date, '%Y-%m-%d')
+            query = query.filter(Customer.created_at <= end_date)
+        except ValueError:
+            pass  # handle date parsing errors or inform the user
+
+    # Execute the query and fetch the results
+    customers = query.all()
+
+    # Render the template with the filtered results
+    return render_template('view_customers.html', customers=customers)
+
+
 def Calculate_gst(Subtotal) :
     return Subtotal * 13 / 100
 
