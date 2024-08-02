@@ -8,6 +8,15 @@
         body {
             font-family: Arial, sans-serif;
         }
+        
+        #tablepad {
+            padding-top: 10px;
+            margin-top: 10px;
+            border: black dotted 0.5px;
+            background-blend-mode: hard-light;
+            background-color: bisque;
+        }
+
 
         .invoice {
             width: 80%;
@@ -50,6 +59,10 @@
             text-align: left;
         }
         #Invoice_number {
+            text-align: right;
+        }
+
+        #cost {
             text-align: right;
         }
     </style>
@@ -113,8 +126,26 @@
             </thead>
 
         </table>
-        <p><strong>Job Details :</strong> {{ customer.Job }}</p>
-        <p><strong>Unit Price :</strong> {{ customer.Price }}</p>
+
+        <table id="tablepad">
+        <tr>    
+        <td>Job Details 1: {{ customer.Job }}</td>
+        <td id="cost">Unit Price : {{ customer.Price }}</td>
+         </tr>
+         <tr>
+        <td>Job Details 2 : {{ customer.Job1 }}</td>
+        <td id="cost">Unit Price : {{ customer.Price1 }}</td>
+        </tr>
+
+        <tr>
+        <td>Job Details 3 : {{ customer.Job2 }}</td>
+        <td id="cost">Unit Price : {{ customer.Price3 }}</td>
+        </tr>
+        <tr>
+        <td>Job Details 4 : {{ customer.Job3 }}</td>
+        <td id="cost">Unit Price :{{ customer.Price3 }}</td>
+        </tr>
+        </table>    
 
         <p><strong>Subtotal :</strong> {{ customer.Subtotal }}</p>
 

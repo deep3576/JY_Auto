@@ -106,6 +106,25 @@ def update_customer(id):
         customer.name = request.form['name']
         customer.email = request.form['email']
         customer.phone = request.form['phone']
+        customer.CarMake = request.form['CarMake']
+        customer.CarModel = request.form['CarModel']
+        customer.Odometer = request.form['Odometer']
+
+        customer.Vin = request.form['Vin']
+
+
+        customer.Price = request.form['Price']
+        customer.Price2 = request.form['Price2']
+        customer.Price3 = request.form['Price3']
+        customer.Price1 = request.form['Price1']
+
+        customer.Job = request.form['Job']
+        customer.Job1 = request.form['Job1']
+        customer.Job2 = request.form['Job2']
+        customer.Job3 = request.form['Job3']
+
+
+    
         
         if id == 0:  # If adding a new customer
             db.session.add(customer)
