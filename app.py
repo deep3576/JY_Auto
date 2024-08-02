@@ -23,17 +23,23 @@ with app.app_context():
 class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
-    email = db.Column(db.String(120), unique=False, nullable=False)
+    email = db.Column(db.String(120), unique=False, nullable=True)
     phone = db.Column(db.String(20), nullable=False)
     CarMake = db.Column(db.String(20), nullable=False)
     CarModel = db.Column(db.String(20), nullable=False)
     Vin = db.Column(db.String(120), nullable=False)
+    Odometer= db.Column(db.String(120), nullable=True)
     Job = db.Column(db.String(240), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     last_updated = db.Column(db.DateTime , nullable= True )
     Price = db.Column(db.Integer, nullable=False)
+    Job1 = db.Column(db.String(240), nullable=True)
     Price1 = db.Column(db.Integer, nullable=True)
+
+    Job2 = db.Column(db.String(240), nullable=True)
     Price2 = db.Column(db.Integer, nullable=True)
+
+    Job3 = db.Column(db.String(240), nullable=True)
     Price3 = db.Column(db.Integer, nullable=True)
     Subtotal = db.Column(db.Integer, nullable=True)
     gst = db.Column(db.Integer, nullable=True)
@@ -60,10 +66,21 @@ def add_customer():
         CarMake = request.form['CarMake']
         CarModel = request.form['CarModel']
         Vin = request.form['Vin']
+        Odometer = request.form['Odometer']
+
         Job = request.form['Job']
         Price = request.form['Price']
+
+        Job1 = request.form['Job1']
         Price1 = request.form['Price1']
-        new_customer = Customer(name=name, email=email, phone=phone , CarMake=CarMake ,CarModel=CarModel,Vin=Vin ,Job=Job,Price=Price,Price1=Price1)
+
+        Job2 = request.form['Job2']
+        Price2 = request.form['Price2']
+
+        Job3 = request.form['Job3']
+        Price3 = request.form['Price3']
+
+        new_customer = Customer(name=name, email=email, phone=phone , CarMake=CarMake ,CarModel=CarModel,Vin=Vin ,Odometer=Odometer,Job=Job,Price=Price,Job1=Job1,Price1=Price1,Job2=Job2,Price2=Price2,Job3=Job3,Price3=Price3)
         
         try:
             db.session.add(new_customer)
@@ -168,13 +185,18 @@ def Calculate_gst(Subtotal) :
     return Subtotal * 13 / 100
 
 def Calculate_Subtotal (Price,Price1,Price2,Price3):
-    if (Price1 == None ):
+    if (Price1 == None ) :
         return Price
-    if (Price2 == None ):
+    if (Price2 == None  ):
         return Price + Price1
     if (Price3 == None ):
         return Price + Price1 + Price2
     return Price + Price1 + Price2 + Price3
+
+def check_and_set_none(value):
+    if isinstance(value, str):
+        return None
+    return value
 
 
 if __name__ == '__main__':

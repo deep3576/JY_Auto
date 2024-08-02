@@ -4,111 +4,154 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Customer</title>
-    <Button onclick="homepage()">Home</Button>
+    
+    
+    <div class="header"> 
+        
+        <h1>Add New Customer</h1>
+        <Button  onclick="homepage()">Home</Button>
+    </div>
+    <link rel="stylesheet" href="{{ url_for('static', filename='addcustomer.css') }}">
+</head>
+
+<body>
+    <form id="myForm" action="{{ url_for('add_customer') }}" method="post">
+        <div class="form-group">
+            <label for="name">Name: <sup>**</sup></label>
+            <input type="text" id="name" name="name" required><br>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email: <sup>**</sup></label>
+            <input type="email" id="email" name="email" ><br>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone: <sup>**</sup></label>
+            <input type="text" id="phone" name="phone" required><br>
+        </div>
+
+        <div class="form-group">
+            <label for="CarMake"> Car Make : <sup>**</sup></label>
+            <input type="text" id="CarMake" name="CarMake" required><br>
+        </div>
+
+        <div class="form-group">
+            <label for="CarModel"> Car Model : <sup>**</sup></label>
+            <input type="text" id="CarModel" name="CarModel" required><br>
+        </div>
+
+        <div class="form-group">
+            <label for="Vin">VIN #  <sup>**</sup></label>
+            <input type="text" id="Vin" name="Vin" required><br>
+        </div>
+
+        <div class="form-group">
+            <label for="Odometer">Odometer :</label>
+            <input type="text" id="Odometer" name="Odometer" ><br>
+        </div>
+
+
+        <div class="form-group">
+            <label for="Job">Job Details : <sup>**</sup></label>
+            <input type="text" id="Job" name="Job" required><br>
+        </div>
+        <div class="form-group">
+            <label for="Price"> Unit Price ( With out GST / HST ): <sup>**</sup></label>
+            <input type="Number" id="Price" name="Price" required><br>
+            <a href="#" id="toggleContentLink">Add Another Job</a>
+            <br>
+        </div>
+
+
+        <div id="additionalContent" class="hidden">
+            <div class="form-group">
+                <label for="Job1">Job Details 2:</label>
+                <input type="text" id="Job1" name="Job1" ><br>
+            </div>
+            <div class="form-group">
+                <label for="Price1"> Unit Price :</label>
+                <input type="Number" id="Price1" name="Price1"><br>
+                <a href="#" id="toggleContentLink2">Add Another Job</a>
+                <br>
+            </div>
+
+        </div>
+
+        <div id="additionalContent2" class="hidden">
+            <div class="form-group">
+                <label for="Job2">Job Details 3:</label>
+                <input type="text" id="Job2" name="Job2"><br>
+            </div>
+
+            <div class="form-group">
+                <label for="Price2"> Unit Price :</label>
+                <input type="Number" id="Price2" name="Price2">
+                <a href="#" id="toggleContentLink3">Add Another Job</a>
+                <br>
+            </div>
+
+        </div>
+
+        <div id="additionalContent3" class="hidden">
+
+            <div class="form-group">
+                <label for="Job2">Job Details 4:</label>
+                <input type="text" id="Job3" name="Job3" ><br>
+            </div>
+
+            <div class="form-group">
+                <label for="Price3"> Unit Price :</label>
+                <input type="Number" id="Price3" name="Price3"><br>
+            </div>
+        </div>
+        <br><br>
+        <button type="submit">Add Customer</button>
+        <button type="reset"> Reset</button>
+    </form>
+
+
     <script>
         function homepage() {
             // Redirect to the specified URL
             window.location.href = "/";
         }
-        function myFunction() {
-            var x = document.getElementById("pricelist1");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        }
-        function myFunction2() {
-            var y = document.getElementById("pricelist2");
-            if (y.style.display === "none") {
-                y.style.display = "block";
-            } else {
-                y.style.display = "none";
-            }
-        }
-        function myFunction3() {
-            var z = document.getElementById("pricelist3");
-            if (z.style.display === "none") {
-                z.style.display = "block";
-            } else {
-                z.style.display = "none";
-            }
-        }
+        document.getElementById('toggleContentLink2').addEventListener('click', function (event) {
+            event.preventDefault();
+            const additionalContent = document.getElementById('additionalContent2');
+            additionalContent.classList.toggle('hidden');
 
+            if (additionalContent.classList.contains('hidden')) {
+                this.textContent = 'Add Another Job';
+            } else {
+                this.textContent = 'Remove Third Job';
+            }
+        });
+
+        document.getElementById('toggleContentLink').addEventListener('click', function (event) {
+            event.preventDefault();
+            const additionalContent = document.getElementById('additionalContent');
+            additionalContent.classList.toggle('hidden');
+
+            if (additionalContent.classList.contains('hidden')) {
+                this.textContent = 'Add Another Job';
+            } else {
+                this.textContent = 'Remove Second Job';
+            }
+        });
+
+        document.getElementById('toggleContentLink3').addEventListener('click', function (event) {
+            event.preventDefault();
+            const additionalContent = document.getElementById('additionalContent3');
+            additionalContent.classList.toggle('hidden');
+
+            if (additionalContent.classList.contains('hidden')) {
+                this.textContent = 'Add Another Job';
+            } else {
+                this.textContent = 'Remove Fourth Job';
+            }
+        });
     </script>
-
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='addcustomer.css') }}">
-
-
-
-</head>
-
-<body>
-    <h1>Add New Customer</h1>
-    <button onclick="myFunction()">Click Me</button>
-
-    <!-- <div id="myDIV" style="display:none">
-        This is my DIV element.
-    </div> -->
-
-    <form action="{{ url_for('add_customer') }}" method="post">
-
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
-        <label for="phone">Phone:</label>
-        <input type="text" id="phone" name="phone" required><br>
-
-        <label for="CarMake"> Car Make :</label>
-        <input type="text" id="CarMake" name="CarMake" required><br>
-
-        <label for="CarModel"> Car Model :</label>
-        <input type="text" id="CarModel" name="CarModel" required><br>
-
-        <label for="Vin">VIN #</label>
-        <input type="text" id="Vin" name="Vin" required><br>
-
-        <label for="Job">Job Details :</label>
-        <input type="text" id="Job" name="Job" required><br>
-
-        <label for="Price"> Unit Price ( With out GST / HST ):</label>
-        <input type="Number" id="Price" name="Price" required><br>
-
-        <div id="pricelist1" style="display:none">
-            <label for="Price1"> Amount Charged ( With out GST / HST ):</label>
-            <input type="Number" id="Price1" name="Price1"><br>
-            <button onlick="myFunction2()"> Add more </button>
-        </div>
-        <!-- 
-        <div id="pricelist2" style="display:none" >
-           <label for="Price2"> Amount Charged ( With out GST / HST ):</label>
-        <input type="Number" id="Price2" name="Price2" required><br>
-        <button onlick="showhide(pricelist3)" >Add more </button>
-        </div>
-        
-        <div id="pricelist3" style="display:none">
-           <label for="Price3"> Amount Charged ( With out GST / HST ):</label>
-        <input type="Number" id="Price3" name="Price3" required><br>
-        </div>       -->
-
-
-        <button type="submit">Add Customer</button>
-
-        <button type="reset"> Reset</button>
-
-        <script>
-            function displayText() {
-                var text = document.getElementById("pricelist1");
-                text.style.display = "block";
-            }
-        </script>
-
-
-    </form>
-
-
 </body>
 
 </html>
