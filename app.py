@@ -185,6 +185,11 @@ def Calculate_gst(Subtotal) :
     return Subtotal * 13 / 100
 
 def Calculate_Subtotal (Price,Price1,Price2,Price3):
+    Price1=check_and_set_none(Price1)
+    Price2=check_and_set_none(Price2)
+    Price3=check_and_set_none(Price3)
+    Price=check_and_set_none(Price)
+
     if (Price1 == None ) :
         return Price
     if (Price2 == None  ):
