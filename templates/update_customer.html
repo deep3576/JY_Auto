@@ -14,6 +14,50 @@
         <input type="email" name="email" value="{{ customer.email or '' }}" required><br>
         <label for="phone">Phone</label>
         <input type="text" name="phone" value="{{ customer.phone or '' }}" required><br>
+
+        <label for="CarMake"> Car Make :</label>
+        <input type="text" name="CarMake" value="{{ customer.CarMake or '' }}" required><br>
+
+        <label for="CarModel"> Car Model :</label>
+        <input type="text" name="CarModel" value="{{ customer.CarModel or '' }}" required><br>
+
+
+        <label for="Vin">VIN #</label>
+        <input type="text" name="Vin" value="{{ customer.Vin or '' }}" required><br>
+
+
+        <label for="Odometer">Odometer :</label>
+        <input type="text" name="Odometer" value="{{ customer.Odometer or '' }}" required><br>
+
+
+
+        <label for="Job">Job Details  1:</label>
+        <input type="text" name="Job" value="{{ customer.Job or '' }}" required><br>
+
+        <label for="Price"> Unit Price ( With out GST / HST ): </label>
+        <input type="Number" name="Price"  value="{{ customer.Price or '' }}" required><br>
+        
+
+        <label for="Job">Job Details  2:</label>
+        <input type="text" name="Job1" value="{{ customer.Job1 or '' }}" ><br>
+
+        <label for="Price1"> Unit Price ( With out GST / HST ): </label>
+        <input type="Number" name="Price1"  value="{{ customer.Price1 }}" ><br>
+
+
+        <label for="Job2">Job Details 3:</label>
+        <input type="text" name="Job2" value="{{ customer.Job2 or '' }}" ><br>
+
+        <label for="Price2"> Unit Price ( With out GST / HST ): </label>
+        <input type="Number" name="Price2"  value="{{ customer.Price2}}" ><br>
+
+
+        <label for="Job3">Job Details 4:</label>
+        <input type="text" name="Job3" value="{{ customer.Job3 or '' }}" ><br>
+
+        <label for="Price3"> Unit Price ( With out GST / HST ): </label>
+        <input type="Number" name="Price3"  value="{{ customer.Price3}}" ><br>
+
         <button type="submit">{% if customer.id %}Update{% else %}Add{% endif %}</button>
     </form>
 </body>
