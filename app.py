@@ -10,6 +10,7 @@ import pandas as pd
 import io
 import webbrowser
 import threading
+import xlsxwriter
 
 
 # app = Flask(__name__)
@@ -72,11 +73,6 @@ def view_all_customers():
     return render_template('view_customers.html', customers=customers)
 
 
-
-
-
-
-
 @app.route('/add_customer', methods=['GET', 'POST'])
 def add_customer():
     if request.method == 'POST':
@@ -122,7 +118,40 @@ def add_customer():
     
     return render_template('add_customer.html')
 
+@app.route('/export', methods=['GET', 'POST'] , endpoint='export_data')
+def export_data_view():
+    if request.method == 'POST':
+        start_date = request.form['start_date']
+        end_date = request.form['end_date']
 
+        # Validate date format
+        try:
+            start_date = datetime.strptime(start_date, '%Y-%m-%d')
+            end_date = datetime.strptime(end_date, '%Y-%m-%d')
+        except ValueError:
+            return "Invalid date format. Please use YYYY-MM-DD.", 400
+
+        # Query database based on date range
+        customers = Customer.query.filter(Customer.created_at.between(start_date, end_date)).all()
+
+        # Convert query result to DataFrame
+        df = pd.DataFrame([(c.id, c.name, c.email, c.phone, c.CarMake, c.CarModel, c.CarColor, 
+                            c.Caryear,c.Vin,c.Odometer,c.Job,c.Price, c.Job1,c.Price1,
+                             c.Job2,c.Price2,
+                              c.Job3,c.Price3, c.Subtotal,c.gst,c.Total_Amount,c.created_at) for c in customers],
+                          columns=['ID', 'Name', 'Email', 'Phone', 'CarMake','CarModel','CarColor','Caryear','Vin',
+                                   'Odometer','Job','Price','Job1','Price1','Job2','Price2','Job3','Price3','Subtotal','gst','Total_Amount','Created_at'])
+
+        # Export to XLSX
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+            df.to_excel(writer, index=False, sheet_name='Customers')
+        output.seek(0)
+
+        # Send the XLSX file as a response
+        return send_file(output, download_name='customers_data.xlsx', as_attachment=True)
+
+    return render_template('export.html')
 
 
 
@@ -241,38 +270,6 @@ def search_customers():
 
     # Render the template with the filtered results
     return render_template('view_customers.html', customers=customers)
-
-
-
-@app.route('/export')
-def export_data():
-    users = Customer.query.order_by(desc(Customer.id)).all()
-    data = [
-        {"id": user.id, "username": user.username, "email": user.email, "created_at": user.created_at}
-        for user in users
-    ]
-    df = pd.DataFrame(data)
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine='openpyxl') as writer:
-        df.to_excel(writer, index=False, sheet_name='Users')
-    output.seek(0)
-    return send_file(output, as_attachment=True, download_name="users.xlsx", mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-
-@app.route('/import', methods=['POST'])
-def import_users():
-    if 'file' not in request.files:
-        return redirect(url_for('users'))
-    file = request.files['file']
-    if file.filename == '':
-        return redirect(url_for('users'))
-    if file and file.filename.endswith('.xlsx'):
-        df = pd.read_excel(file)
-        for index, row in df.iterrows():
-            user = Customer(username=row['username'], email=row['email'])
-            db.session.add(user)
-        db.session.commit()
-    return redirect(url_for('users'))
-
 
 
 

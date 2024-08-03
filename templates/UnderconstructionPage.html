@@ -28,11 +28,43 @@
         p {
             color: #777;
         }
+
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            border-radius: 5px;
+        }
+
+        .buttons a:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Accounts Page</h1>
+        <div class="buttons">
+            <Button onclick="homepage()">Home</Button>
+            <script>
+            function homepage() {
+                                    // Redirect to the specified URL
+                                    window.location.href = "/" ;
+                                }
+            
+            </script>
+            <a href="{{ url_for('export_data') }}"> General Ledger </a>
+
+        </div>
+
         <p>You will get new functionalities related to accounts here.</p>
         <p>Page is under development.</p>
     </div>

@@ -28,7 +28,7 @@ if __name__ == '__main__':
     parser.add_argument('--add-current', action='store_true', help='Add current machine\'s MAC address to the allowed list')
     args = parser.parse_args()
 
-    default_mac_address = "00:1A:2B:3C:4D:5E"
+    default_mac_address = "30:35:ad:ae:7d:80"
     allowed_mac_addresses = [default_mac_address]
 
     if args.mac:

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Data</title>
+</head>
+<body>
+    <h1>Export Customer Data</h1>
+    <form method="POST" action="{{ url_for('export_data') }}">
+        <label for="start_date">From:</label>
+        <input type="date" id="start_date" name="start_date" required>
+        <label for="end_date">To:</label>
+        <input type="date" id="end_date" name="end_date" required>
+        <button type="submit">Export to XLSX</button>
+    </form>
+</body>
+</html>
