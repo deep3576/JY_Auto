@@ -150,7 +150,7 @@ def export_data_view():
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         filename = f'customers_data_{timestamp}.xlsx'
         # Send the XLSX file as a response
-        return send_file(output, download_name='filename', as_attachment=True)
+        return send_file(output, download_name=filename, as_attachment=True)
 
     return render_template('export.html')
 
