@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from weasyprint import HTML
 from io import BytesIO
@@ -19,6 +20,8 @@ app.config['SECRET_KEY'] = 'Gmsshn!43'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
 
 with app.app_context():
     db.create_all()  # This creates the tables if they don't exist
@@ -32,6 +35,10 @@ class Customer(db.Model):
     phone = db.Column(db.String(20), nullable=False)
     CarMake = db.Column(db.String(20), nullable=False)
     CarModel = db.Column(db.String(20), nullable=False)
+    CarColor = db.Column(db.String(20), nullable=True)
+    Caryear = db.Column(db.Integer, nullable=True)
+    Technician = db.Column (db.String(120),nullable=True)
+
     Vin = db.Column(db.String(120), nullable=False)
     Odometer= db.Column(db.String(120), nullable=True)
     Job = db.Column(db.String(240), nullable=False)
@@ -80,6 +87,8 @@ def add_customer():
 
         Caryear = request.form['Caryear']
         CarColor = request.form['CarColor']
+        Technician = request.form['Technician']
+        
 
 
         Odometer = request.form['Odometer']
@@ -96,9 +105,10 @@ def add_customer():
         Job3 = request.form['Job3']
         Price3 = request.form['Price3']
 
-        new_customer = Customer(name=name, email=email, phone=phone , CarMake=CarMake ,CarModel=CarModel,Vin=Vin ,Odometer=Odometer,Job=Job,Price=Price,Job1=Job1,Price1=Price1,Job2=Job2,Price2=Price2,Job3=Job3,Price3=Price3)
+        new_customer = Customer(name=name, email=email, phone=phone , CarMake=CarMake ,CarModel=CarModel,Vin=Vin ,Caryear=Caryear,CarColor=CarColor,Technician=Technician,Odometer=Odometer,Job=Job,Price=Price,Job1=Job1,Price1=Price1,Job2=Job2,Price2=Price2,Job3=Job3,Price3=Price3)
         
         try:
+            
             db.session.add(new_customer)
             db.session.commit()
             flash('Customer added successfully!', 'success')
@@ -109,6 +119,10 @@ def add_customer():
         return redirect(url_for('view_all_customers'))
     
     return render_template('add_customer.html')
+
+
+
+
 
 
 @app.route('/customer/<int:id>', methods=['GET', 'POST'])
@@ -129,6 +143,7 @@ def update_customer(id):
         customer.Vin = request.form['Vin']
         customer.CarColor = request.form['CarColor']
         customer.Caryear = request.form['Caryear']
+        customer.Technician = request.form['Technician']
 
 
 

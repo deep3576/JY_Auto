@@ -13,6 +13,9 @@ print_message "Upgrading pip..."
 # Upgrade pip in the virtual environment
 pip3 install --upgrade pip
 
+pip install Flask-Migrate
+
+
 pip3 install flask flask_sqlalchemy gunicorn
 
 pip3 install pandas openpyxl
