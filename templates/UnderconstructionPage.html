@@ -48,19 +48,20 @@
             background-color: #0056b3;
         }
     </style>
+
+<div class="buttons">
+    <Button onclick="homepage()">Home</Button>
+    <script>
+    function homepage() {
+                            // Redirect to the specified URL
+                            window.location.href = "/" ;
+                        }
+    </script>
 </head>
 <body>
     <div class="container">
         <h1>Accounts Page</h1>
-        <div class="buttons">
-            <Button onclick="homepage()">Home</Button>
-            <script>
-            function homepage() {
-                                    // Redirect to the specified URL
-                                    window.location.href = "/" ;
-                                }
-            
-            </script>
+
             <a href="{{ url_for('export_data') }}"> General Ledger </a>
 
         </div>
