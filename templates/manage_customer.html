@@ -74,6 +74,12 @@ function homepage() {
 </head>
 <body>
     
+    <form action="/import" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".xlsx">
+        <button type="submit">Import Users</button>
+    </form>
+    <a href="/export"><button>Export Users to Excel</button></a>
+
 
 
 

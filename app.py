@@ -3,6 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from weasyprint import HTML
 from io import BytesIO
 from datetime import datetime
+from sqlalchemy import desc
+import pandas as pd
+import io
+
+
 
 # app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///auto_shop.db'
@@ -54,8 +59,14 @@ def home():
 
 @app.route('/customers', methods=['GET'])
 def view_all_customers():
-    customers = Customer.query.all()
+    customers = Customer.query.order_by(desc(Customer.id)).limit(20).all()
     return render_template('view_customers.html', customers=customers)
+
+
+
+
+
+
 
 @app.route('/add_customer', methods=['GET', 'POST'])
 def add_customer():
@@ -66,6 +77,11 @@ def add_customer():
         CarMake = request.form['CarMake']
         CarModel = request.form['CarModel']
         Vin = request.form['Vin']
+
+        Caryear = request.form['Caryear']
+        CarColor = request.form['CarColor']
+
+
         Odometer = request.form['Odometer']
 
         Job = request.form['Job']
@@ -111,6 +127,9 @@ def update_customer(id):
         customer.Odometer = request.form['Odometer']
 
         customer.Vin = request.form['Vin']
+        customer.CarColor = request.form['CarColor']
+        customer.Caryear = request.form['Caryear']
+
 
 
         customer.Price = request.form['Price']
@@ -147,7 +166,6 @@ def delete_customer(id):
 @app.route('/invoice/<int:id>')
 def invoice(id):
     customer = Customer.query.get_or_404(id)
-    print ('Total Amount ::',customer.Total_Amount)
     customer.Subtotal = Calculate_Subtotal(customer.Price,customer.Price1,customer.Price2,customer.Price3)
     customer.gst=Calculate_gst(customer.Subtotal)
     customer.Total_Amount = customer.Subtotal + customer.gst
@@ -194,10 +212,43 @@ def search_customers():
             pass  # handle date parsing errors or inform the user
 
     # Execute the query and fetch the results
-    customers = query.limit(10).all()
+    customers = query.order_by(desc(Customer.id)).limit(20).all()
 
     # Render the template with the filtered results
     return render_template('view_customers.html', customers=customers)
+
+
+
+@app.route('/export')
+def export_data():
+    users = Customer.query.order_by(desc(Customer.id)).all()
+    data = [
+        {"id": user.id, "username": user.username, "email": user.email, "created_at": user.created_at}
+        for user in users
+    ]
+    df = pd.DataFrame(data)
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Users')
+    output.seek(0)
+    return send_file(output, as_attachment=True, download_name="users.xlsx", mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+@app.route('/import', methods=['POST'])
+def import_users():
+    if 'file' not in request.files:
+        return redirect(url_for('users'))
+    file = request.files['file']
+    if file.filename == '':
+        return redirect(url_for('users'))
+    if file and file.filename.endswith('.xlsx'):
+        df = pd.read_excel(file)
+        for index, row in df.iterrows():
+            user = Customer(username=row['username'], email=row['email'])
+            db.session.add(user)
+        db.session.commit()
+    return redirect(url_for('users'))
+
+
 
 
 def Calculate_gst(Subtotal) :

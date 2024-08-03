@@ -13,6 +13,10 @@ print_message "Upgrading pip..."
 # Upgrade pip in the virtual environment
 pip3 install --upgrade pip
 
+pip3 install flask flask_sqlalchemy gunicorn
+
+pip3 install pandas openpyxl
+
 print_message "Installing dependencies from requirements.txt..."
 # Install the required packages
 pip3 install -r requirements.txt
@@ -22,4 +26,4 @@ print_message "Running the Flask application..."
 print_message "application will be running on port 8000"
 print_message "http://localhost:8000"
 
-gunicorn -w 4 -b 0.0.0.0:8000 app:app
+gunicorn -w 1 -b 0.0.0.0:8000 app:app

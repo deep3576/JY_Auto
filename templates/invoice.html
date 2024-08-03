@@ -15,7 +15,12 @@
             border: black dotted 0.5px;
             background-blend-mode: hard-light;
             background-color: bisque;
+            border-bottom: 1px solid gray ;
         }
+
+         #tablepad tr {
+           border-bottom: 1px dotted lightgray ;
+        } 
 
 
         .invoice {
@@ -40,6 +45,7 @@
         .invoice td {
             padding: 8px;
             text-align: left;
+           
         }
 
         .invoice th {
@@ -65,6 +71,13 @@
         #cost {
             text-align: right;
         }
+        #job {
+            text-align: left;
+        }
+        #job1 , #job2 , #job3 {
+            text-wrap: wrap;
+        } 
+
     </style>
 </head>
 
@@ -83,6 +96,8 @@
                     <th id="Invoice_number"> Invoice Number :</strong> {{ customer.id }} </th>
                 </tr>
                 </th>
+                <br>
+                <br>
 
         </table>
 
@@ -128,22 +143,29 @@
         </table>
 
         <table id="tablepad">
+        <thead >
+            <th id="job"> Job Details </th>
+            <th id ="cost"> Unit Price </th>
+        </thead>
+
         <tr>    
-        <td>Job Details 1: {{ customer.Job }}</td>
-        <td id="cost">Unit Price : {{ customer.Price }}</td>
+        <td id="job"> {{ customer.Job }}</td>
+        <td id="cost">{{ customer.Price }}</td>
          </tr>
-         <tr>
-        <td>Job Details 2 : {{ customer.Job1 }}</td>
-        <td id="cost">Unit Price : {{ customer.Price1 }}</td>
+        
+        <tr id="job1">
+        <td>{{ customer.Job1 }}</td>
+        <td id="cost">{{ customer.Price1 }}</td>
         </tr>
 
-        <tr>
-        <td>Job Details 3 : {{ customer.Job2 }}</td>
-        <td id="cost">Unit Price : {{ customer.Price3 }}</td>
+        <tr id="job2">
+        <td>{{ customer.Job2 }}</td> 
+        <td id="cost">{{ customer.Price2 }}</td>
         </tr>
-        <tr>
-        <td>Job Details 4 : {{ customer.Job3 }}</td>
-        <td id="cost">Unit Price :{{ customer.Price3 }}</td>
+        
+        <tr id="job3">
+        <td> {{ customer.Job3 }}</td>
+        <td id="cost">{{ customer.Price3 }}</td>
         </tr>
         </table>    
 
@@ -156,5 +178,23 @@
 
     </div>
 </body>
+
+<script>
+        value="{{ customer.Job1 }}"
+        function displayIfNotNull() {
+            const element = document.getElementById('Job1');
+            if (value !== null && value !== undefined && value !== '') {
+                element.style.display = 'block'; // Show the element
+            } else {
+                element.style.display = 'none';  // Hide the element
+            }
+        }
+
+        // Call the function on page load
+        window.onload = displayIfNotNull;
+
+
+</script>
+
 
 </html>

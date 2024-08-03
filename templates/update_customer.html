@@ -11,7 +11,7 @@
         <label for="name">Name</label>
         <input type="text" name="name" value="{{ customer.name or '' }}" required><br>
         <label for="email">Email</label>
-        <input type="email" name="email" value="{{ customer.email or '' }}" required><br>
+        <input type="email" name="email" value="{{ customer.email or '' }}" ><br>
         <label for="phone">Phone</label>
         <input type="text" name="phone" value="{{ customer.phone or '' }}" required><br>
 
@@ -21,13 +21,19 @@
         <label for="CarModel"> Car Model :</label>
         <input type="text" name="CarModel" value="{{ customer.CarModel or '' }}" required><br>
 
+        <label for="Caryear"> Car Year :</label>
+        <input type="text" name="Caryear" value="{{ customer.Caryear or '' }}" required><br>
+
+        <label for="CarColor"> Car Color :</label>
+        <input type="text" name="CarColor" value="{{ customer.CarColor or '' }}" required><br>
+
 
         <label for="Vin">VIN #</label>
         <input type="text" name="Vin" value="{{ customer.Vin or '' }}" required><br>
 
 
-        <label for="Odometer">Odometer :</label>
-        <input type="text" name="Odometer" value="{{ customer.Odometer or '' }}" required><br>
+        <label for="Odometer">Odometer / Mileage :</label>
+        <input type="text" name="Odometer" value="{{ customer.Odometer or '' }}" ><br>
 
 
 
