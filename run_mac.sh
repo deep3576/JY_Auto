@@ -7,6 +7,10 @@ set -e
 print_message() {
     echo -e "\n\033[1;32m$1\033[0m"
 }
+brew install defaultbrowser
+
+
+defaultbrowser chrome
 
 
 print_message "Upgrading pip..."
@@ -22,4 +26,8 @@ print_message "Running the Flask application..."
 print_message "application will be running on port 8000"
 print_message "http://localhost:8000"
 
-python3 run_app.py
+if [ "$#" -eq 0 ]; then
+    echo "Running App now"
+    python3 run_app.py
+
+fi

@@ -298,24 +298,6 @@ def check_and_set_none(value):
         return None
     return value
 
-def check_mac_address():
-    # Specify the allowed MAC address here
-    allowed_mac_address = "00:1A:2B:3C:4D:5E"
-    mac_address = get_mac_address()
-    if mac_address == allowed_mac_address:
-        print("Allowed MAC address found. Running the application.")
-        return True
-    else:
-        print(f"MAC address {mac_address} is not allowed.")
-        return False
-
-def open_browser():
-    webbrowser.open_new("http://127.0.0.1:5000/")
-
 if __name__ == '__main__':
-    if check_mac_address():
-        db.create_all()
-        threading.Timer(1.25, open_browser).start()
-        app.run(debug=True)
-    else:
-        print("MAC address check failed. Exiting.")
+    db.create_all()
+    app.run(debug=True)
