@@ -6,4 +6,7 @@ SQLAlchemy==1.4.53
 datetime==5.5
 gunicorn==22.0.0
 Waitress==3.0.0
-
+getmac==0.9.5
+Flask-Migrate==4.0.7
+pandas==2.2.2
+openpyxl==3.1.5

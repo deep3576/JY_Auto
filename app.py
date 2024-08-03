@@ -1,13 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from getmac import get_mac_address
 from weasyprint import HTML
 from io import BytesIO
 from datetime import datetime
 from sqlalchemy import desc
 import pandas as pd
 import io
-
+import webbrowser
+import threading
 
 
 # app = Flask(__name__)
@@ -191,6 +193,14 @@ def invoice(id):
     pdf.seek(0)
     return send_file(pdf, download_name='invoice.pdf', as_attachment=True)
 
+@app.route('/UnderconstructionPage',methods=['GET'])
+def UnderconstructionPage():
+    return render_template('UnderconstructionPage.html')
+
+
+
+
+
 
 
 @app.route('/search_customers', methods=['GET'])
@@ -288,8 +298,24 @@ def check_and_set_none(value):
         return None
     return value
 
+def check_mac_address():
+    # Specify the allowed MAC address here
+    allowed_mac_address = "00:1A:2B:3C:4D:5E"
+    mac_address = get_mac_address()
+    if mac_address == allowed_mac_address:
+        print("Allowed MAC address found. Running the application.")
+        return True
+    else:
+        print(f"MAC address {mac_address} is not allowed.")
+        return False
+
+def open_browser():
+    webbrowser.open_new("http://127.0.0.1:5000/")
 
 if __name__ == '__main__':
-    db.create_all() 
-    app.run(debug=True)
-
+    if check_mac_address():
+        db.create_all()
+        threading.Timer(1.25, open_browser).start()
+        app.run(debug=True)
+    else:
+        print("MAC address check failed. Exiting.")

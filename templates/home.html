@@ -1,9 +1,17 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>JY Auto Shop Management Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function maximizeWindow() {
+            window.moveTo(0, 0);
+            window.resizeTo(screen.width, screen.height);
+        }
+        window.onload = maximizeWindow;
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,6 +23,7 @@
             align-items: center;
             height: 100vh;
         }
+
         .container {
             text-align: center;
             background: white;
@@ -22,12 +31,15 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         h1 {
             color: #333;
         }
+
         .buttons {
             margin-top: 20px;
         }
+
         .buttons a {
             display: inline-block;
             margin: 10px;
@@ -37,11 +49,13 @@
             background-color: #007BFF;
             border-radius: 5px;
         }
+
         .buttons a:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>JY Auto Shop Management</h1>
@@ -49,9 +63,10 @@
         <div class="buttons">
             <a href="{{ url_for('view_all_customers') }}">View All Customers</a>
             <a href="{{ url_for('add_customer') }}">Add New Customer</a>
-            <a href="{{ url_for('view_all_customers') }}"> Accounts </a>
-            
+            <a href="{{ url_for('UnderconstructionPage') }}"> Accounts </a>
+
         </div>
     </div>
 </body>
+
 </html>
