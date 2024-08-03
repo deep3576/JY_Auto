@@ -147,9 +147,10 @@ def export_data_view():
         with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
             df.to_excel(writer, index=False, sheet_name='Customers')
         output.seek(0)
-
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f'customers_data_{timestamp}.xlsx'
         # Send the XLSX file as a response
-        return send_file(output, download_name='customers_data.xlsx', as_attachment=True)
+        return send_file(output, download_name='filename', as_attachment=True)
 
     return render_template('export.html')
 
