@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Report</title>
+</head>
+<style>
+        .invoice table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .invoice th,
+        .invoice td {
+            padding: 8px;
+            text-align: left;
+
+        }
+
+        .invoice th {
+            background-color: #f2f2f2;
+        }
+
+        .invoice tr {
+            background-color: white;
+
+        }
+
+        .invoice p {
+            text-align: right;
+        }
+
+        table {
+            border:1px solid red;
+        }
+
+        #separ {
+            border-top: dotted 2px darkgrey;
+
+        }
+
+</style>
+
+<body>
+    <h1>Sales Report for {{ today }}</h1>
+    <div class="invoice">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Vehicle</th>
+                <th>Cash Sale</th>
+                <th>Credit / Card Sale</th>
+                <th>etransfer Sale</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr>
+                <td>{{customer.id}}</td>
+                <td>{{customer.CarMake}} {{customer.CarModel}} {{customer.CarColor}}</td>
+                <td>{% if customer.cash %}
+                 {{customer.Total_Amount}}
+                 {% endif %} </td> 
+                 <td>{% if customer.card %}
+                  {{customer.Total_Amount}}
+                 {% endif %}
+                </td>
+                <td>
+                 {% if customer.etransfer %}
+                  {{customer.Total_Amount}}
+                 {% endif %}      
+                </td>          
+            </tr>
+            {% endfor %}
+        
+    
+                <tr id="separ">
+                    <td colspan="2"> <strong>Totals of the day<strong</td>
+                    <td>{{ total_cash }}</td>
+                    <td>{{ total_card }}</td>
+                    <td>{{ total_etransfer }}</td>
+                </tr>      
+      
+</tbody>
+</table>
+</div>
+</body>
+</html>

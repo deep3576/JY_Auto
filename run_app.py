@@ -3,6 +3,7 @@ import sys
 import threading
 import webbrowser
 import argparse
+import app
 
 from getmac import get_mac_address
 
@@ -23,6 +24,7 @@ def open_browser():
     webbrowser.open_new("http://127.0.0.1:8000/")
 
 if __name__ == '__main__':
+    app.db.create_all()
     parser = argparse.ArgumentParser(description='Run Flask app with MAC address check.')
     parser.add_argument('--mac', type=str, help='Allowed MAC address')
     parser.add_argument('--add-current', action='store_true', help='Add current machine\'s MAC address to the allowed list')

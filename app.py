@@ -7,10 +7,13 @@ from io import BytesIO
 from datetime import datetime
 from sqlalchemy import desc
 import pandas as pd
+from datetime import datetime, date
 import io
 import webbrowser
 import threading
 import xlsxwriter
+
+
 
 
 # app = Flask(__name__)
@@ -60,11 +63,42 @@ class Customer(db.Model):
     gst = db.Column(db.Integer, nullable=True)
     Total_Amount = db.Column(db.Integer, nullable=True)
 
+    cash = db.Column(db.Boolean, default=False)
+    etransfer = db.Column(db.Boolean, default=False)
+    card = db.Column(db.Boolean, default=False)
+
     # Add other fields as needed
 
 @app.route('/')
 def home():
     return render_template('home.html')
+
+@app.route('/eod_report' ,methods=['POST','GET'], endpoint='eod_report')
+def eod_report():
+    today = date.today()
+
+    customers=Customer.query.filter(db.func.date(Customer.created_at) == today).all()
+ 
+    cash_entries = Customer.query.filter(db.func.date(Customer.created_at) == today,Customer.cash == True).all()
+    total_cash = sum(entry.Total_Amount or 0 for entry in cash_entries)
+
+    #Get entries where Card is True
+    card_entries = Customer.query.filter(db.func.date(Customer.created_at) == today,Customer.card == True).all()
+    total_card = sum(entry.Total_Amount or 0 for entry in card_entries)
+
+    # Get entries where Etransfer is True
+    etransfer_entries = Customer.query.filter(db.func.date(Customer.created_at) == today,Customer.etransfer == True).all()
+    total_etransfer = sum(entry.Total_Amount or 0 for entry in etransfer_entries)
+    
+
+    #customer = Customer.query.get_or_404(id)     
+    return render_template('eod_report.html', customers=customers , total_cash=total_cash ,total_card=total_card,total_etransfer=total_etransfer ,today=today )
+    
+    # html = render_template('eod_report.html', customer=customer)
+    # pdf = BytesIO()
+    # HTML(string=html).write_pdf(pdf)
+    # pdf.seek(0)
+    # return send_file(pdf, download_name='End_of_Day_Report.pdf', as_attachment=True)
 
 
 @app.route('/customers', methods=['GET'])
@@ -86,7 +120,9 @@ def add_customer():
         Caryear = request.form['Caryear']
         CarColor = request.form['CarColor']
         Technician = request.form['Technician']
-        
+        card=request.form.get('card') == 'on'
+        etransfer = request.form.get('etransfer') == 'on'
+        cash = request.form.get('cash') == 'on'
 
 
         Odometer = request.form['Odometer']
@@ -103,11 +139,20 @@ def add_customer():
         Job3 = request.form['Job3']
         Price3 = request.form['Price3']
 
-        new_customer = Customer(name=name, email=email, phone=phone , CarMake=CarMake ,CarModel=CarModel,Vin=Vin ,Caryear=Caryear,CarColor=CarColor,Technician=Technician,Odometer=Odometer,Job=Job,Price=Price,Job1=Job1,Price1=Price1,Job2=Job2,Price2=Price2,Job3=Job3,Price3=Price3)
         
+
+        
+
+        customer = Customer(name=name, email=email, phone=phone , CarMake=CarMake ,CarModel=CarModel,
+                                Vin=Vin ,Caryear=Caryear,CarColor=CarColor,Technician=Technician,
+                                Odometer=Odometer,Job=Job,Price=Price,Job1=Job1,Price1=Price1,
+                                Job2=Job2,Price2=Price2,Job3=Job3,Price3=Price3,card=card, 
+                                cash=cash, etransfer=etransfer )
+        
+
         try:
             
-            db.session.add(new_customer)
+            db.session.add(customer)
             db.session.commit()
             flash('Customer added successfully!', 'success')
         except Exception as e:
@@ -138,9 +183,9 @@ def export_data_view():
         df = pd.DataFrame([(c.id, c.name, c.email, c.phone, c.CarMake, c.CarModel, c.CarColor, 
                             c.Caryear,c.Vin,c.Odometer,c.Job,c.Price, c.Job1,c.Price1,
                              c.Job2,c.Price2,
-                              c.Job3,c.Price3, c.Subtotal,c.gst,c.Total_Amount,c.created_at) for c in customers],
+                              c.Job3,c.Price3, c.Subtotal,c.gst,c.Total_Amount,c.created_at,c.cash,c.card,c.etransfer) for c in customers],
                           columns=['ID', 'Name', 'Email', 'Phone', 'CarMake','CarModel','CarColor','Caryear','Vin',
-                                   'Odometer','Job','Price','Job1','Price1','Job2','Price2','Job3','Price3','Subtotal','gst','Total_Amount','Created_at'])
+                                   'Odometer','Job','Price','Job1','Price1','Job2','Price2','Job3','Price3','Subtotal','gst','Total_Amount','Created_at','Cash','Card','Etransfer'])
 
         # Export to XLSX
         output = BytesIO()
@@ -177,8 +222,10 @@ def update_customer(id):
         customer.Caryear = request.form['Caryear']
         customer.Technician = request.form['Technician']
 
-
-
+        customer.card = request.form.get('card') == 'on'
+        customer.cash = request.form.get('cash') == 'on'
+        customer.etransfer = request.form.get('etransfer') == 'on'
+        
         customer.Price = request.form['Price']
         customer.Price2 = request.form['Price2']
         customer.Price3 = request.form['Price3']
@@ -187,10 +234,7 @@ def update_customer(id):
         customer.Job = request.form['Job']
         customer.Job1 = request.form['Job1']
         customer.Job2 = request.form['Job2']
-        customer.Job3 = request.form['Job3']
-
-
-    
+        customer.Job3 = request.form['Job3']      
         
         if id == 0:  # If adding a new customer
             db.session.add(customer)
@@ -216,6 +260,7 @@ def invoice(id):
     customer.Subtotal = Calculate_Subtotal(customer.Price,customer.Price1,customer.Price2,customer.Price3)
     customer.gst=Calculate_gst(customer.Subtotal)
     customer.Total_Amount = customer.Subtotal + customer.gst
+    db.session.commit()
     
     html = render_template('invoice.html', customer=customer)
     pdf = BytesIO()
@@ -226,12 +271,6 @@ def invoice(id):
 @app.route('/UnderconstructionPage',methods=['GET'])
 def UnderconstructionPage():
     return render_template('UnderconstructionPage.html')
-
-
-
-
-
-
 
 @app.route('/search_customers', methods=['GET'])
 def search_customers():

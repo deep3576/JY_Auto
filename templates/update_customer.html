@@ -38,12 +38,20 @@
         <label for="Technician"> Mention all Technicians working  :</label>
         <input type="text" name="Technician" value="{{ customer.Technician or '' }}" ><br>
 
+        <p><strong>Note :</strong> Must Select only One Mode of Payment.</p>
+        <label for="etransfer">e-transfer Payment</label>
+        <input type="checkbox"  name="etransfer" {% if customer.etransfer %}checked{% endif %}><br>
+        
+        <label for="cash">Cash Payment</label>
+        <input type="checkbox"  name="cash" {% if customer.cash %}checked{% endif %}><br>
 
+        <label for="card">Credit/ Debit Card <label>
+        <input type="checkbox"  name="card" {% if customer.card %}checked{% endif %}><br>
 
-
+        <br><br>
 
         <label for="Job">Job Details  1:</label>
-        <input type="text" name="Job" value="{{ customer.Job or '' }}" required><br>
+        <input type="text" name="Job" value="{{ customer.Job or '' }}" required><br> 
 
         <label for="Price"> Unit Price ( With out GST / HST ): </label>
         <input type="Number" name="Price"  value="{{ customer.Price or '' }}" required><br>
