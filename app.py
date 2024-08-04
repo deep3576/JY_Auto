@@ -92,13 +92,11 @@ def eod_report():
     
 
     #customer = Customer.query.get_or_404(id)     
-    return render_template('eod_report.html', customers=customers , total_cash=total_cash ,total_card=total_card,total_etransfer=total_etransfer ,today=today )
-    
-    # html = render_template('eod_report.html', customer=customer)
-    # pdf = BytesIO()
-    # HTML(string=html).write_pdf(pdf)
-    # pdf.seek(0)
-    # return send_file(pdf, download_name='End_of_Day_Report.pdf', as_attachment=True)
+    html = render_template('eod_report.html', customers=customers , total_cash=total_cash ,total_card=total_card,total_etransfer=total_etransfer ,today=today )
+    pdf = BytesIO()
+    HTML(string=html).write_pdf(pdf)
+    pdf.seek(0)
+    return send_file(pdf, download_name=f'End_of_Day_Report_{today}.pdf', as_attachment=True)
 
 
 @app.route('/customers', methods=['GET'])
