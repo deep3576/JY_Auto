@@ -46,7 +46,9 @@ if __name__ == '__main__':
     print( allowed_mac_addresses)
     if check_mac_address(allowed_mac_addresses):
         threading.Timer(1.25, open_browser).start()
-        subprocess.run([sys.executable, "-m", "gunicorn", "-w", "4", "-b", "127.0.0.1:8000", "app:app"])
+        subprocess.run([sys.executable, "-m", "gunicorn", "-w", "2", "-b", "127.0.0.1:8000", "app:app"])
+
+
     else:
         print("MAC address check failed. Exiting.")
 
