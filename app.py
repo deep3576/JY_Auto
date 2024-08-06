@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -335,4 +337,4 @@ def check_and_set_none(value):
 
 if __name__ == '__main__':
     db.create_all()
-    app.run(debug=True)
+    app.run(debug=False)
